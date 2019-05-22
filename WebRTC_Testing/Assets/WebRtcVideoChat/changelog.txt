@@ -1,0 +1,74 @@
+Change Log
+	
+	Changelog will move to https://www.because-why-not.com/webrtc/changelog/ and this file will be removed next update.
+	
+	0.981   - Documentation updated. Please visit https://www.because-why-not.com/webrtc to find out more
+			- Tutorials for signaling server & stun/turn server setup added: https://www.because-why-not.com/webrtc/tutorials-server-side/
+			- ICall received new methods to send String & byte[] to one or multiple users using UDP or TCP style channels
+			- Android video has been further optimized (full native camera access will come soon)
+			- CallApp has a new configuration button allowing users to change resolution and other settings
+			- CallApp shows now additional information if the image is clicked once
+			- CallApp will now save the last settings (based on the name if its GameObject to still allow multiple instances in one application)
+			- extra folder added. These are additional features requested by users and can be used at your own risk.
+			- extra VideoInput added. It can be used to stream custom images or from a Unity camera
+			- mobile devices won't switch off screen any more of CallApp is used
+			- extra OneToMany added. It is an example how to use the IMediaInterface to stream to multiple recives.
+			- extra VideoConference added. An example how to create conference calls using ICall interface. 
+			- example folder added. It contains several minimal examples to help new users.
+			  See more here:https://www.because-why-not.com/webrtc/examples/
+			- mac native libraries uses proper bundle format now
+			- iOS workaround added. If a phone call ends Unity will turn off sound for all 
+			  AudioSources. IosHelper.UnitySetAudioSessionActive can be called after the call ended to switch
+			  the Audio back into the correct mode. All AudioSources need to be restarted after it.
+			- signaling server contains now a webserver to make testing and use of https://letsencrypt.org/ easier
+			 
+	
+	
+	0.98	- iOS support (arm + arm64). Please check the readme.txt for how to build it.
+			- Removed log messages / errors appearing with Unity 2017.2
+			- C++ side was rewritten entirely replacing all callbacks with a polling based system
+			- Using the debugger in Unity should work better now 
+			- Video Frames will now be automatically dropped if the Update method isn't called quickly enough (e.g. during a FPS drop)
+			- IMediaNetwork is now supported and can be created using UnityCallFactory.Instance.CreateMediaNetwork
+				It works similar to WebRTC Network's IBasicNetwork interface but adds audio and video to make broadcasting to 
+				audio / video to multiple users easier
+			- UnityCallFactory.SetLoudspeakerStatus / GetLoudspeakerStatus added. Mobile devices treat WebRTC calls like regular phone calls
+				requring the speakers to be manually turned on.
+			- WebGL version was adapted to recent changes in Chrome. The CallEnded event should now be triggered during disconnects due to network failure 
+			- CallApp was improved to better support mobile platforms + a new button was added to change SetLoudspeakerStatus
+			- Numerous smaller bugfixes and changes based on user reports received in the past few months
+			
+
+    0.975   - WebGL and native ICall and IMediaInterface supports now new methods: SetVolume, HasVideoTrack, HasAudioTrack
+            - Android x86 is now supported
+            - Updated AndroidHelper.cs. It now includes functions to change volume or switch to IN_COMMUNICATION mode
+                (to allow the user to change the volume via the volume keys)
+            - Works with Unity 5.6 WebGL now
+            - Update to WebRTC 56
+
+    0.974
+            - Android version heavily optimizes + improvement in documentation (check readme.txt !!!)
+            - added Echo cancellation support for native applications (see CallApp.Start())
+            
+            
+    0.973
+            - UI improvement in CallApp
+            - Stun / Turn servers are now fully supported including username / password for login
+            - Bugfixes for Android
+            - Video support for Android and Mac via Unity video texture
+            
+    0.972   - Update WebRTC version to the same as Chrome 53
+            - Stun server and signaling server can be changed in prefabs
+            - Bugfixes
+            
+    0.97    - Added support for Android and OSX (video support is not yet stable!)
+    
+    0.96    - Added support for broadcast / multicast networks (configured at server side))
+            - New events ConfigurationComplete and ConfigurationFailed triggered by ICall.Configure calls
+            - Video Conferences are now supported! Activate it using the NetworkConfig.IsConference flag.
+                  Conference Call example app follows soon!
+            - The resolution of the local webcam can be changed now (see class MediaConfig)
+            - Added support for WebGL
+            - some optimization / increase in performance
+            
+    0.95    - Initial release

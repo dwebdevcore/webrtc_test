@@ -1,0 +1,970 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Byn.Media</name>
+    </assembly>
+    <members>
+        <member name="T:Byn.Media.CallEventHandler">
+            <summary>
+            Delegate to receive call events
+            </summary>
+            <param name="sender">The call object sending the event</param>
+            <param name="args">event args</param>
+        </member>
+        <member name="T:Byn.Media.CallEventType">
+            <summary>
+            Type of the event.
+            </summary>
+        </member>
+        <member name="F:Byn.Media.CallEventType.Invalid">
+            <summary>
+            Used if the event value wasn't initialized
+            </summary>
+        </member>
+        <member name="F:Byn.Media.CallEventType.WaitForIncomingCall">
+            <summary>
+            The call object is successfully connected to the server waiting for another user 
+            to connect.
+            </summary>
+        </member>
+        <member name="F:Byn.Media.CallEventType.CallAccepted">
+            <summary>
+            A call was accepted
+            </summary>
+        </member>
+        <member name="F:Byn.Media.CallEventType.CallEnded">
+            <summary>
+            The call ended
+            </summary>
+        </member>
+        <member name="F:Byn.Media.CallEventType.FrameUpdate">
+            <summary>
+            A new video frame arrived
+            </summary>
+        </member>
+        <member name="F:Byn.Media.CallEventType.Message">
+            <summary>
+            Text message arrived
+            </summary>
+        </member>
+        <member name="F:Byn.Media.CallEventType.ConnectionFailed">
+            <summary>
+            Connection failed. Might be due to an server, network error or the address didn't exist
+            Using ErrorEventArgs
+            </summary>
+        </member>
+        <member name="F:Byn.Media.CallEventType.ListeningFailed">
+            <summary>
+            Listening failed. Address might be in use or due to server/network error
+            Using ErrorEventArgs
+            </summary>
+        </member>
+        <member name="F:Byn.Media.CallEventType.ConfigurationComplete">
+            <summary>
+            Event triggered after the local media was successfully configured. 
+            If requested the call object will have access to the users camera and/or audio now and
+            the local camera frames can be received in events. 
+            </summary>
+        </member>
+        <member name="F:Byn.Media.CallEventType.ConfigurationFailed">
+            <summary>
+            Configuration failed. This happens if the configuration requested features
+            the system doesn't support e.g. no camera, camera doesn't support the requested resolution
+            or the user didn't allow the website to access the camera/microphone in WebGL mode.
+            </summary>
+        </member>
+        <member name="F:Byn.Media.CallEventType.DataMessage">
+            <summary>
+            Reliable or unreliable data msg arrived
+            </summary>
+        </member>
+        <member name="T:Byn.Media.CallEventArgs">
+            <summary>
+            Base class of all call event args.
+            
+            A subclass might contain more information about the call.
+            </summary>
+        </member>
+        <member name="M:Byn.Media.CallEventArgs.#ctor(Byn.Media.CallEventType)">
+            <summary>
+            Creates a new call event.
+            </summary>
+            <param name="type">Type of the event</param>
+        </member>
+        <member name="P:Byn.Media.CallEventArgs.Type">
+            <summary>
+            Returns the CallEventType.
+            </summary>
+        </member>
+        <member name="T:Byn.Media.CallAcceptedEventArgs">
+            <summary>
+            Event notices the user that a new call was accepted. The property ConnectionId
+            can be used to distinguish messages / video frames of this particular user in 
+            conference calls.
+            </summary>
+        </member>
+        <member name="M:Byn.Media.CallAcceptedEventArgs.#ctor(Byn.Net.ConnectionId)">
+            <summary>
+            Creates new events args for accepted calls.
+            </summary>
+            <param name="connectionId"></param>
+        </member>
+        <member name="P:Byn.Media.CallAcceptedEventArgs.ConnectionId">
+            <summary>
+            Id to identify the new connection in conference calls.
+            </summary>
+        </member>
+        <member name="T:Byn.Media.CallEndedEventArgs">
+            <summary>
+            Another Call object ended the connection.
+            
+            Note that in conference call this event can occur multiple time for each connected user.
+            </summary>
+        </member>
+        <member name="M:Byn.Media.CallEndedEventArgs.#ctor(Byn.Net.ConnectionId)">
+            <summary>
+            Creates new events args for accepted calls.
+            </summary>
+            <param name="connectionId"></param>
+        </member>
+        <member name="P:Byn.Media.CallEndedEventArgs.ConnectionId">
+            <summary>
+            Id to identify the new connection in conference calls.
+            </summary>
+        </member>
+        <member name="T:Byn.Media.CallErrorType">
+            <summary>
+            Net yet implemented.
+            This enum will give detail information of why the error occurred to make it easier to handle it automatically.
+            </summary>
+        </member>
+        <member name="F:Byn.Media.CallErrorType.Unknown">
+            <summary>
+            Reason not known.
+            </summary>
+        </member>
+        <member name="T:Byn.Media.ErrorEventArgs">
+            <summary>
+            Error events contain a error message and an error type to automatically handle the error.
+            </summary>
+        </member>
+        <member name="M:Byn.Media.ErrorEventArgs.#ctor(Byn.Media.CallEventType,Byn.Media.CallErrorType,System.String)">
+            <summary>
+            Creates a new error event.
+            </summary>
+            <param name="eventType"></param>
+            <param name="errorType"></param>
+            <param name="errorMessage"></param>
+        </member>
+        <member name="P:Byn.Media.ErrorEventArgs.ErrorMessage">
+            <summary>
+            Human readable error message. 
+            </summary>
+        </member>
+        <member name="P:Byn.Media.ErrorEventArgs.ErrorType">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Byn.Media.WaitForIncomingCallEventArgs">
+            <summary>
+            Event notifies the call is waiting for incoming connections.
+            </summary>
+        </member>
+        <member name="M:Byn.Media.WaitForIncomingCallEventArgs.#ctor(System.String)">
+            <summary>
+            Creates a new WaitForIncomingCallEventArgs object.
+            </summary>
+            <param name="address">Address</param>
+        </member>
+        <member name="P:Byn.Media.WaitForIncomingCallEventArgs.Address">
+            <summary>
+            Address that other calls can use to connect.
+            </summary>
+        </member>
+        <member name="T:Byn.Media.FramePixelFormat">
+            <summary>
+            Dummy for the future. Only one format is supported so far.
+            </summary>
+        </member>
+        <member name="F:Byn.Media.FramePixelFormat.Invalid">
+            <summary>
+            No pixel format set.
+            </summary>
+        </member>
+        <member name="F:Byn.Media.FramePixelFormat.ABGR">
+            <summary>
+            Default format due to browser restrictions
+            </summary>
+        </member>
+        <member name="F:Byn.Media.FramePixelFormat.YUY2">
+            <summary>
+            DO NOT USE. FOR TESTING ONLY
+            </summary>
+        </member>
+        <member name="T:Byn.Media.MessageEventArgs">
+            <summary>
+            Text message from other peer received.
+            </summary>
+        </member>
+        <member name="M:Byn.Media.MessageEventArgs.#ctor(Byn.Net.ConnectionId,System.String,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+            <param name="message"></param>
+            <param name="reliable"></param>
+        </member>
+        <member name="P:Byn.Media.MessageEventArgs.ConnectionId">
+            <summary>
+            Not yet fully supported. This will allow to distinguish multiple remote senders. 
+            </summary>
+        </member>
+        <member name="P:Byn.Media.MessageEventArgs.Reliable">
+            <summary>
+            true for reliable channel, false for unreliable
+            </summary>
+        </member>
+        <member name="P:Byn.Media.MessageEventArgs.Content">
+            <summary>
+            Content of the text message.
+            </summary>
+        </member>
+        <member name="T:Byn.Media.DataMessageEventArgs">
+            <summary>
+            Event for a received data message. Contains the sent byte[] and indication
+            if it was sent using the reliable or unreliable channel.
+            </summary>
+        </member>
+        <member name="M:Byn.Media.DataMessageEventArgs.#ctor(Byn.Net.ConnectionId,System.Byte[],System.Boolean)">
+            <summary>
+            Creates a new data message event
+            </summary>
+            <param name="id">connection id that sent the message</param>
+            <param name="data">content</param>
+            <param name="reliable">true for reliable channel, false for unreliable</param>
+        </member>
+        <member name="P:Byn.Media.DataMessageEventArgs.ConnectionId">
+            <summary>
+            Not yet fully supported. This will allow to distinguish multiple remote senders. 
+            </summary>
+        </member>
+        <member name="P:Byn.Media.DataMessageEventArgs.Content">
+            <summary>
+            Content of the text message.
+            </summary>
+        </member>
+        <member name="P:Byn.Media.DataMessageEventArgs.Reliable">
+            <summary>
+            true for reliable channel, false for unreliable
+            </summary>
+        </member>
+        <member name="T:Byn.Media.FrameUpdateEventArgs">
+            <summary>
+            New video frame received
+            </summary>
+        </member>
+        <member name="M:Byn.Media.FrameUpdateEventArgs.#ctor(Byn.Net.ConnectionId,Byn.Media.RawFrame)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="conId"></param>
+            <param name="frame"></param>
+        </member>
+        <member name="P:Byn.Media.FrameUpdateEventArgs.Format">
+            <summary>
+            Returns the format the image is encoded in.
+            Only 32bit Argb is supported currently.
+            </summary>
+        </member>
+        <member name="P:Byn.Media.FrameUpdateEventArgs.ConnectionId">
+            <summary>
+            Not yet fully support. This will allow to distinguish multiple remote senders. 
+            </summary>
+        </member>
+        <member name="P:Byn.Media.FrameUpdateEventArgs.TrackId">
+            <summary>
+            Currently always 0! This will allow to distinguish between multiple video tracks
+            sent by the same source in the future.
+            </summary>
+        </member>
+        <member name="P:Byn.Media.FrameUpdateEventArgs.IsRemote">
+            <summary>
+            False if the frame is from a local camera. True if it is received from a
+            via network.
+            </summary>
+        </member>
+        <member name="P:Byn.Media.FrameUpdateEventArgs.Frame">
+            <summary>
+            Raw image data. Note that the byte array contained in RawFrame will be reused
+            for the next frames received. Only valid until the next call of ICall.Update
+            </summary>
+        </member>
+        <member name="T:Byn.Media.MediaConfigurationState">
+            <summary>
+            Used to identify the state of the local media
+            configuration
+            </summary>
+        </member>
+        <member name="F:Byn.Media.MediaConfigurationState.Invalid">
+            <summary>
+            Invalid / not initialized. 
+            </summary>
+        </member>
+        <member name="F:Byn.Media.MediaConfigurationState.NoConfiguration">
+            <summary>
+            Not yet configured
+            </summary>
+        </member>
+        <member name="F:Byn.Media.MediaConfigurationState.InProgress">
+            <summary>
+            Configuration process running.
+            In browser mode this state is active while the user sees a window to 
+            allow access / choose video and audio device
+            </summary>
+        </member>
+        <member name="F:Byn.Media.MediaConfigurationState.Successful">
+            <summary>
+            Configuration process finished and local video/audio can be received and sent across network
+            </summary>
+        </member>
+        <member name="F:Byn.Media.MediaConfigurationState.Failed">
+            <summary>
+            User denied access or video/audio device missing or did not satisfy the requirements set
+            by MediaConfig
+            </summary>
+        </member>
+        <member name="T:Byn.Media.IMediaNetwork">
+            <summary>
+            WebRtc network that allows access to video / audio functionality.
+            
+            This interface will change a lot in the future. Do not use.
+            </summary>
+        </member>
+        <member name="M:Byn.Media.IMediaNetwork.Configure(Byn.Media.MediaConfig)">
+            <summary>
+            Configures the local media stream allowing to
+            activate the local camera and microphone.
+            </summary>
+            <param name="config"></param>
+        </member>
+        <member name="M:Byn.Media.IMediaNetwork.GetConfigurationState">
+            <summary>
+            Returns the current state of the configuration process
+            </summary>
+            <returns>Current value of MediaConfigurationState</returns>
+        </member>
+        <member name="M:Byn.Media.IMediaNetwork.GetConfigurationError">
+            <summary>
+            Returns an error in case the configuration state is failed.
+            (note this is not fully implemented)
+            </summary>
+            <returns>
+            Text returned by native webrtc or the  browser (not yet implemented.
+            Will reference to the browsers log for error information)
+            </returns>
+        </member>
+        <member name="M:Byn.Media.IMediaNetwork.ResetConfiguration">
+            <summary>
+            Resets the configuration back to NoConfiguration. Can only be used during
+            Failed state.
+            </summary>
+        </member>
+        <member name="M:Byn.Media.IMediaNetwork.TryGetFrame(Byn.Net.ConnectionId)">
+            <summary>
+            Returns a RawFrame. This is a direct reference used internally and should
+            not be accessed after the next Update call.
+            </summary>
+            <param name="id">
+            ConnectionId of the user to get the frame information or INVALID for the local frame.
+            </param>
+            <returns>Returns a RawFrame containing an image or null if non available</returns>
+        </member>
+        <member name="M:Byn.Media.IMediaNetwork.SetVolume(System.Double,Byn.Net.ConnectionId)">
+            <summary>
+            Sets a volume for the replay of a remote connections audio stream.
+            </summary>
+            <param name="volume"> 1 = normal volume, 0 = mute.
+            The native version supports values above 1 (up to 10). For the browser version 1 is the maximum value.
+            </param>
+            <param name="remoteUserId">Id of the remote connection. </param>
+        </member>
+        <member name="M:Byn.Media.IMediaNetwork.HasAudioTrack(Byn.Net.ConnectionId)">
+            <summary>
+            Checks if the connection with the given id has a media stream with an audio track
+            attached.
+            </summary>
+            <returns>True if at least one audio track is attached. False if no audio track or no media stream</returns>
+        </member>
+        <member name="M:Byn.Media.IMediaNetwork.HasVideoTrack(Byn.Net.ConnectionId)">
+            <summary>
+            Checks if the connection with the given id has a media stream with an video track
+            attached.
+            </summary>
+            <returns>True if at least one video track is attached. False if no video track or no media stream</returns>
+        </member>
+        <member name="T:Byn.Media.AWebRtcCall">
+            <summary>
+            Abstract base call class. Used for shared functionality between
+            all platforms.
+            </summary>
+        </member>
+        <member name="T:Byn.Media.ICall">
+            <summary>
+            Main interface for platform independent video calls.
+            
+            Do not forget to call Dispose method after you finished the call or the connection
+            might run forever in the background!
+            </summary>
+        </member>
+        <member name="M:Byn.Media.ICall.Configure(Byn.Media.MediaConfig)">
+            <summary>
+            Sets the media configuration. Currently, you can call this only once during the life time
+            of the Call object!
+            
+            You need to call this before Listen or Call is used.
+            </summary>
+            <param name="config"></param>
+        </member>
+        <member name="M:Byn.Media.ICall.Listen(System.String)">
+            <summary>
+            Listens on a given address (any string shorter than 256 characters).
+            
+            The event handler will return WaitForIncomingCall once incoming calls can be
+            received and ListeningFailed if an error occurred.
+            
+            In conference mode multiple calls listening on the same address will be
+            connected.
+            
+            </summary>
+            <param name="address">Any string. Max 256 characters.</param>
+        </member>
+        <member name="M:Byn.Media.ICall.Call(System.String)">
+            <summary>
+            Will try to connect to an address of another Call object (which called Listen).
+            Don't use in conference mode!
+            </summary>
+            <param name="address">Any string. Max 256 characters.</param>
+        </member>
+        <member name="M:Byn.Media.ICall.Send(System.String)">
+            <summary>
+            Sends a text message to the connected users.
+            Messages will be sent reliably
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:Byn.Media.ICall.Send(System.String,System.Boolean)">
+            <summary>
+            Same as Send(string message) but allows
+            to send unreliable as well.
+            </summary>
+            <param name="message"></param>
+            <param name="reliable"></param>
+        </member>
+        <member name="M:Byn.Media.ICall.Send(System.String,System.Boolean,Byn.Net.ConnectionId)">
+            <summary>
+            Allows to set a specific user to send the message to
+            for use in conference calls.
+            </summary>
+            <param name="message"></param>
+            <param name="reliable"></param>
+            <param name="id"></param>
+        </member>
+        <member name="M:Byn.Media.ICall.Send(System.Byte[],System.Boolean)">
+            <summary>
+            Added in 0.981. For testing only so far.
+            Allows sending of arbitrary data either reliable or unreliable.
+            
+            Use this method only to send short messages to avoid blocking the
+            internal data streams. This limit is not enforced internally.
+            Feel free to experiment.
+            </summary>
+            <param name="data"></param>
+            <param name="reliable">true to use the TCP style channel, false for UDP style</param>
+        </member>
+        <member name="M:Byn.Media.ICall.Send(System.Byte[],System.Boolean,Byn.Net.ConnectionId)">
+            <summary>
+            Added in 0.981. For testing only so far.
+            Allows sending of arbitrary data either reliable or unreliable.
+            
+            Use this method only to send short messages to avoid blocking the
+            internal data streams. This limit is not enforced internally.
+            Feel free to experiment.
+            </summary>
+            <param name="data"></param>
+            <param name="reliable">true to use the TCP style channel, false for UDP style</param>
+            <param name="id">User to send the message to</param>
+        </member>
+        <member name="M:Byn.Media.ICall.Update">
+            <summary>
+            Call this to update the internal state of this object and trigger the events. You should do this 
+            around 30-60 times per second.
+            </summary>
+        </member>
+        <member name="M:Byn.Media.ICall.SetVolume(System.Double,Byn.Net.ConnectionId)">
+            <summary>
+            Sets a volume for the replay of a remote connections audio stream.
+            </summary>
+            <param name="volume"> 1 = normal volume, 0 = mute, everything above 1 might increase volume but reduce quality</param>
+            <param name="remoteUserId">Id of the remote connection. </param>
+        </member>
+        <member name="M:Byn.Media.ICall.HasAudioTrack(Byn.Net.ConnectionId)">
+            <summary>
+            Checks if the connection with the given id has a media stream with an audio track
+            attached.
+            </summary>
+            <returns>True if at least one audio track is attached. False if no audio track or no media stream</returns>
+        </member>
+        <member name="M:Byn.Media.ICall.HasVideoTrack(Byn.Net.ConnectionId)">
+            <summary>
+            Checks if the connection with the given id has a media stream with an video track
+            attached.
+            </summary>
+            <returns>True if at least one video track is attached. False if no video track or no media stream</returns>
+        </member>
+        <member name="E:Byn.Media.ICall.CallEvent">
+            <summary>
+            Event handler. Returns all events from new accepted calls to frame updates of the local and remote
+            camera.
+            
+            All events will be triggered during call of the Update method (see below) to avoid multi threading issues.
+            </summary>
+        </member>
+        <member name="P:Byn.Media.ICall.LocalFrameEvents">
+            <summary>
+            If this property is set to true the call object will
+            return an Event of type FrameUpdateEventArgs each time the local
+            video device created a new frame.
+            Set this to false if you don't want to show the local user image
+            or there is an alternative way to showing the frame.
+            
+            Setting this value to false will increase performance and reduce 
+            needed memory as it avoids unnecessary image copies / processing.
+            </summary>
+        </member>
+        <member name="F:Byn.Media.AWebRtcCall.mNetworkConfig">
+            <summary>
+            Used network configuration
+            </summary>
+        </member>
+        <member name="F:Byn.Media.AWebRtcCall.mMediaConfig">
+            <summary>
+            Media configuration or null if no media is configured.
+            != null doesn't mean the configuration was accepted. 
+            </summary>
+        </member>
+        <member name="F:Byn.Media.AWebRtcCall.mNetwork">
+            <summary>
+            Local media network doing all the hard work.
+            </summary>
+        </member>
+        <member name="F:Byn.Media.AWebRtcCall.mConferenceMode">
+            <summary>
+            True = conference mode without Call. Connecting all using Listen in
+            NxN full mesh
+            </summary>
+        </member>
+        <member name="F:Byn.Media.AWebRtcCall.mIsDisposed">
+            <summary>
+            Set to true after Dispose called.
+            </summary>
+        </member>
+        <member name="F:Byn.Media.AWebRtcCall.mConnectionIds">
+            <summary>
+            Keeps track of all connected users
+            </summary>
+        </member>
+        <member name="F:Byn.Media.AWebRtcCall.mPendingListenCall">
+            <summary>
+            Flags used to wait for a configuration complete event
+            before Listen or Call is called.
+            </summary>
+        </member>
+        <member name="M:Byn.Media.AWebRtcCall.#ctor(Byn.Media.NetworkConfig)">
+            <summary>
+            Creates a new call using a given NetworkConfig object.
+            </summary>
+            <param name="config">
+            NetworkConfig deciding url of the signaling server + 
+            WebRTC ice servers.
+            </param>
+        </member>
+        <member name="M:Byn.Media.AWebRtcCall.Initialize(Byn.Media.IMediaNetwork)">
+            <summary>
+            Needs to be called by the subclass
+            </summary>
+        </member>
+        <member name="M:Byn.Media.AWebRtcCall.Configure(Byn.Media.MediaConfig)">
+            <summary>
+            Configures the camera/audio devices used for the call
+            </summary>
+            <param name="config"></param>
+        </member>
+        <member name="M:Byn.Media.AWebRtcCall.Call(System.String)">
+            <summary>
+            Starts an outgoing call. Only supported in direct mode. Use Listen to connect in 
+            conference mode no matter if ingoing or outgoing.
+            </summary>
+            <param name="address"></param>
+        </member>
+        <member name="M:Byn.Media.AWebRtcCall.Listen(System.String)">
+            <summary>
+            Listens to incoming calls on the given address.
+            </summary>
+            <param name="address"></param>
+        </member>
+        <member name="M:Byn.Media.AWebRtcCall.Send(System.String,System.Boolean)">
+            <summary>
+            Sends a text message to all connected peers.
+            </summary>
+            <param name="message">Any text message</param>
+            <param name="reliable">Set false for sending messages unreliably</param>
+        </member>
+        <member name="M:Byn.Media.AWebRtcCall.Update">
+            <summary>
+            Updates the call. Should be called around 30 times per second to move data from
+            browser / native webrtc to this call object (and the used thread)
+            </summary>
+        </member>
+        <member name="M:Byn.Media.AWebRtcCall.HandleMediaEvents">
+            <summary>
+            Called after HandleNetworkEvents and before Flush.
+            It will handle the video frames and subclasses can use it
+            to handle additional video or audio data.
+            </summary>
+        </member>
+        <member name="M:Byn.Media.AWebRtcCall.HandleNetworkEvent(Byn.Net.NetworkEvent)">
+            <summary>
+            Method is called to handle the network events triggered by the internal media network and 
+            trigger related event handlers for the call object.
+            </summary>
+            <param name="evt"></param>
+        </member>
+        <member name="M:Byn.Media.AWebRtcCall.TriggerCallEvent(Byn.Media.CallEventArgs)">
+            <summary>
+            Will send out data to the user.
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:Byn.Media.AWebRtcCall.Dispose(System.Boolean)">
+            <summary>
+            Destroys the call.
+            </summary>
+            <param name="disposing"></param>
+        </member>
+        <member name="M:Byn.Media.AWebRtcCall.Dispose">
+            <summary>
+            Destroys the call object and released underlaying resources.
+            </summary>
+        </member>
+        <member name="E:Byn.Media.AWebRtcCall.CallEvent">
+            <summary>
+            Event handler. All call events are delivered via this
+            event handler.
+            </summary>
+        </member>
+        <member name="P:Byn.Media.AWebRtcCall.IsDisposed">
+            <summary>
+            Will return true after Dispose is called.
+            Just for testing. Software should be designed to never need this.
+            </summary>
+        </member>
+        <member name="P:Byn.Media.AWebRtcCall.State">
+            <summary>
+            Mainly used for debugging.
+            </summary>
+        </member>
+        <member name="P:Byn.Media.AWebRtcCall.LocalFrameEvents">
+            <summary>
+            Set to true to block delivery of local frames to increase performance.
+            
+            </summary>
+        </member>
+        <member name="T:Byn.Media.AWebRtcCall.CallState">
+            <summary>
+            State of the call. Mainly used to check for bugs / invalid states.
+            </summary>
+        </member>
+        <member name="F:Byn.Media.AWebRtcCall.CallState.Invalid">
+            <summary>
+            Not yet initialized / bug
+            </summary>
+        </member>
+        <member name="F:Byn.Media.AWebRtcCall.CallState.Initialized">
+            <summary>
+            Object is initialized but local media not yet configured
+            </summary>
+        </member>
+        <member name="F:Byn.Media.AWebRtcCall.CallState.Configuring">
+            <summary>
+            In process of accessing the local media devices.
+            </summary>
+        </member>
+        <member name="F:Byn.Media.AWebRtcCall.CallState.Configured">
+            <summary>
+            Configured. Video/Audio can be accessed and call is ready to start
+            </summary>
+        </member>
+        <member name="F:Byn.Media.AWebRtcCall.CallState.RequestingAddress">
+            <summary>
+            In process of requesting an address from the server to then listen and wait for
+            an incoming call.
+            </summary>
+        </member>
+        <member name="F:Byn.Media.AWebRtcCall.CallState.WaitingForIncomingCall">
+            <summary>
+            Call is listening on an address and waiting for an incoming call
+            </summary>
+        </member>
+        <member name="F:Byn.Media.AWebRtcCall.CallState.WaitingForOutgoingCall">
+            <summary>
+            Call is in the process of connecting to another call object.
+            </summary>
+        </member>
+        <member name="F:Byn.Media.AWebRtcCall.CallState.InCall">
+            <summary>
+            Indicating that the call object is at least connected to another object
+            </summary>
+        </member>
+        <member name="F:Byn.Media.AWebRtcCall.CallState.Closed">
+            <summary>
+            Call ended / conference room closed
+            </summary>
+        </member>
+        <member name="T:Byn.Media.NetworkConfig">
+            <summary>
+            Contains information about how to setup webrtc.
+            </summary>
+        </member>
+        <member name="P:Byn.Media.NetworkConfig.IceServers">
+            <summary>
+            New place to setup stun and turn servers. Unlike the old version it allows to set
+            username and password for secure connections.
+            </summary>
+        </member>
+        <member name="P:Byn.Media.NetworkConfig.SignalingUrl">
+            <summary>
+            Server used to find the other peer based on a given string. 
+            
+            Leave empty to use a default server (development only!).
+            
+            Setting this value to null will turn on the test mode! Instead of using a 
+            signaling server the network will be simulated locally (program wide only)
+            </summary>
+        </member>
+        <member name="P:Byn.Media.NetworkConfig.AllowRenegotiation">
+            <summary>
+            NOTE: TESTING ONLY! NOT YET SUPPORTED ON BROWSER VERSION! MIGHT BE BUGGY STILL!
+            Default: false
+            
+            Setting this value to true will keep the connection to the signaling server active after a direct connection
+            was established.
+            Set this to true if you want to be able to change the media stream configuration without reconnecting e.g.
+            turning video on / off without restarting the connection.
+            
+            Set to false if to keep the use of the signaling server to a minimum. 
+            
+            </summary>
+        </member>
+        <member name="P:Byn.Media.NetworkConfig.IsConference">
+            <summary>
+            Set true to set the call object to conference mode.
+            Everyone listening to the same address will be connected.
+            Don't use if not necessary as it will allow any user to connect during the call any time.
+            </summary>
+        </member>
+        <member name="T:Byn.Media.ICallFactory">
+            <summary>
+            Factory to create new Call objects. 
+            
+            See platform dependent documentation to find out how to get
+            a reference to the ICallFactory.
+            </summary>
+        </member>
+        <member name="M:Byn.Media.ICallFactory.Create(Byn.Media.NetworkConfig)">
+            <summary>
+            Creates a new call object. Optional with a custom network configuration.
+            
+            Do not forget to call Dispose after you finished the call or the connection
+            might run forever in the background!
+            </summary>
+            <param name="config"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Byn.Media.ICallFactory.GetVideoDevices">
+            <summary>
+            Returns an array of video devices. This list might be empty if no device is found
+            or choice of devices is not supported on the platform.
+            </summary>
+            <returns>A list of video devices or null if choice of video devices isn't supported by
+            the current platform.</returns>
+        </member>
+        <member name="M:Byn.Media.ICallFactory.CanSelectVideoDevice">
+            <summary>
+            Returns true if the video devices can be selected.
+            False if there is no access (browser).
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Byn.Media.MediaConfig">
+            <summary>
+            Configuration for the WebRtcCall class.
+            
+            Allows to turn on / off video and audio + configures the used servers to initialize the connection and
+            avoid firewalls.
+            
+            Note that the min/max and ideal Width/Height values are suggestions to WebRTC and the reaction to these 
+            values are not well defined. Always be prepared to get a different resolution or no video data at all!
+            </summary>
+        </member>
+        <member name="M:Byn.Media.MediaConfig.#ctor">
+            <summary>
+            Default configuration. Can be used directly.
+            </summary>
+        </member>
+        <member name="M:Byn.Media.MediaConfig.#ctor(Byn.Media.MediaConfig)">
+            <summary>
+            Copy constructor used to clone objects of MediaConfig and its 
+            subclasses.
+            </summary>
+            <param name="other"></param>
+        </member>
+        <member name="M:Byn.Media.MediaConfig.DeepClone">
+            <summary>
+            Creates a clone by copying the content of all members.
+            </summary>
+            <returns>Cloned object</returns>
+        </member>
+        <member name="M:Byn.Media.MediaConfig.ToString">
+            <summary>
+            Returns a string listing all values
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Byn.Media.MediaConfig.Audio">
+            <summary>
+            Set true to allow sending video to the other connection(s)
+            </summary>
+        </member>
+        <member name="P:Byn.Media.MediaConfig.Video">
+            <summary>
+            Set true to allow sending video to the other connection(s).
+            
+            </summary>
+        </member>
+        <member name="P:Byn.Media.MediaConfig.VideoDeviceName">
+            <summary>
+            Name of the video device or null to automatically choose any device.
+            Will be ignored in the browser as the user needs to configure the browser
+            itself to set a certain video device.
+            </summary>
+        </member>
+        <member name="P:Byn.Media.MediaConfig.MinWidth">
+            <summary>
+            Sets the absolute minimum width usable. Everything below this
+            resolution leads to an error during the configuration process.
+            </summary>
+        </member>
+        <member name="P:Byn.Media.MediaConfig.MinHeight">
+            <summary>
+            Sets the absolute minimum height usable. Everything below this
+            resolution leads to an error during the configuration process.
+            </summary>
+        </member>
+        <member name="P:Byn.Media.MediaConfig.MaxWidth">
+            <summary>
+            Sets the absolute maximum width usable. Everything above this
+            resolution leads to an error during the configuration process.
+            
+            Note that a too high value here can reduce the performance extremely if a user
+            has a high res webcam but a weak CPU.
+            </summary>
+        </member>
+        <member name="P:Byn.Media.MediaConfig.MaxHeight">
+            <summary>
+            Sets the absolute maximum height usable. Everything above this
+            resolution leads to an error during the configuration process.
+            
+            Note that a too high value here can reduce the performance extremely if a user
+            has a high res webcam but a weak CPU.
+            
+            </summary>
+        </member>
+        <member name="P:Byn.Media.MediaConfig.IdealWidth">
+            <summary>
+            Ideal width. The closest value width is used if the camera has multiple possible
+            configurations that are within max and min width.
+            </summary>
+        </member>
+        <member name="P:Byn.Media.MediaConfig.IdealHeight">
+            <summary>
+            Ideal height. The closest value height is used if the camera has multiple possible
+            configurations that are within max and min width.
+            </summary>
+        </member>
+        <member name="P:Byn.Media.MediaConfig.IdealFrameRate">
+            <summary>
+            WebRTC will chose the device configuration which has the FPS closest to the given
+            value for IdealFrameRate.
+            (IdealWidth, IdealHeight has priority though.)
+            </summary>
+        </member>
+        <member name="P:Byn.Media.MediaConfig.MinFrameRate">
+            <summary>
+            WebRTC will only consider device configurations that have at least
+            the given frame rate.
+            </summary>
+        </member>
+        <member name="P:Byn.Media.MediaConfig.MaxFrameRate">
+            <summary>
+            WebRTC will only consider device configurations that have
+            a frame rate below the given value.
+            
+            </summary>
+        </member>
+        <member name="P:Byn.Media.MediaConfig.Format">
+            <summary>
+            This will support multiple formats in the future. So far only 
+            FramePixelFormat.ABGR is supported due to browser compatibility.
+            </summary>
+        </member>
+        <member name="T:Byn.Media.RawFrame">
+            <summary>
+            Presents a raw video frame of a webcam.
+            References to these objects will be reused after the next
+            call to ICall.Update! Do not keep references for longer!
+            </summary>
+        </member>
+        <member name="M:Byn.Media.RawFrame.#ctor(System.Byte[],System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Constructs a new raw frame.
+            </summary>
+            <param name="buffer">Byte buffer. Reference will be stored to avoid copies! Do not reuse the array later!</param>
+            <param name="width">Width</param>
+            <param name="height">Height</param>
+            <param name="rotation">Rotation of the raw image.</param>
+        </member>
+        <member name="P:Byn.Media.RawFrame.Buffer">
+            <summary>
+            Byte array containing the raw pixel data of the current webcam frame.
+            </summary>
+        </member>
+        <member name="P:Byn.Media.RawFrame.Width">
+            <summary>
+            Width of the image.
+            </summary>
+        </member>
+        <member name="P:Byn.Media.RawFrame.Height">
+            <summary>
+            Height of the image
+            </summary>
+        </member>
+        <member name="P:Byn.Media.RawFrame.Rotation">
+            <summary>
+            Can be 0, 90, 180 or 270. Before showing the image to the user
+            rotate the image by this value.
+            
+            </summary>
+        </member>
+    </members>
+</doc>
